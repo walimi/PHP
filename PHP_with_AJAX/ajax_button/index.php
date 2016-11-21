@@ -29,21 +29,40 @@
         background: #000099;
       }
 
+      .favorite-heart {
+        color: red;
+        font-size: 2em;
+        float: right;
+        display: none;
+      }
+
+      /*
+        Displays the heart only when the .favorite-heart has a parent class
+        of favorite which happens when user clicks the "Favoite" button on the
+        blog.
+      */
+      .favorite .favorite-heart {
+        display: block;
+      }
+
     </style>
   </head>
   <body>
     <div id="blog-posts">
       <div id="blog-post-101" class="blog-post">
+        <span class="favorite-heart">&hearts;</span>
         <h3>Blog Post 101</h3>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed scelerisque nunc malesuada mauris fermentum commodo. Integer non pellentesque augue, vitae pellentesque tortor. Ut gravida ullamcorper dolor, ac fringilla mauris interdum id. Nulla porta egestas nisi, et eleifend nisl tincidunt suscipit. Suspendisse massa ex, fringilla quis orci a, rhoncus porta nulla. Aliquam diam velit, bibendum sit amet suscipit eget, mollis in purus. Sed mattis ultricies scelerisque. Integer ligula magna, feugiat non purus eget, pharetra volutpat orci. Duis gravida neque erat, nec venenatis dui dictum vel. Maecenas molestie tortor nec justo porttitor, in sagittis libero consequat. Maecenas finibus porttitor nisl vitae tincidunt.</p>
         <button class="favorite-button">Favorite</button>
       </div>
       <div id="blog-post-102" class="blog-post">
+        <span class="favorite-heart">&hearts;</span>
         <h3>Blog Post 102</h3>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed scelerisque nunc malesuada mauris fermentum commodo. Integer non pellentesque augue, vitae pellentesque tortor. Ut gravida ullamcorper dolor, ac fringilla mauris interdum id. Nulla porta egestas nisi, et eleifend nisl tincidunt suscipit. Suspendisse massa ex, fringilla quis orci a, rhoncus porta nulla. Aliquam diam velit, bibendum sit amet suscipit eget, mollis in purus. Sed mattis ultricies scelerisque. Integer ligula magna, feugiat non purus eget, pharetra volutpat orci. Duis gravida neque erat, nec venenatis dui dictum vel. Maecenas molestie tortor nec justo porttitor, in sagittis libero consequat. Maecenas finibus porttitor nisl vitae tincidunt.</p>
         <button class="favorite-button">Favorite</button>
       </div>
       <div id="blog-post-103" class="blog-post">
+        <span class="favorite-heart">&hearts;</span>
         <h3>Blog Post 103</h3>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed scelerisque nunc malesuada mauris fermentum commodo. Integer non pellentesque augue, vitae pellentesque tortor. Ut gravida ullamcorper dolor, ac fringilla mauris interdum id. Nulla porta egestas nisi, et eleifend nisl tincidunt suscipit. Suspendisse massa ex, fringilla quis orci a, rhoncus porta nulla. Aliquam diam velit, bibendum sit amet suscipit eget, mollis in purus. Sed mattis ultricies scelerisque. Integer ligula magna, feugiat non purus eget, pharetra volutpat orci. Duis gravida neque erat, nec venenatis dui dictum vel. Maecenas molestie tortor nec justo porttitor, in sagittis libero consequat. Maecenas finibus porttitor nisl vitae tincidunt.</p>
         <button class="favorite-button">Favorite</button>
@@ -68,6 +87,11 @@
           if(xhr.readyState == 4 && xhr.status == 200) {
             var result = xhr.responseText;
             console.log('Result: ' + result);
+            // If the result comes back as the string 'true' then we want to
+            // add a class to the parent div tag.
+            if(result === 'true') {
+              parent.classList.add("favorite");
+            }
           }
         };
         xhr.send("id=" + parent.id);
