@@ -54,8 +54,9 @@
       function favorite() {
         /*
         * We need to get to the id attribute of the div tag that has the button.
-        * Because this method was called for the button whose parent is that
-        * div tag we can get to the parent element using this.parentElement.
+        * Because this method was called for the button whose parent is the
+        * div tag we are looking for, we can get to the parent element using
+        * this.parentElement.
         */
         var parent = this.parentElement;
 
