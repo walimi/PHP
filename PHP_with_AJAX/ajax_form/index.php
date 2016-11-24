@@ -7,6 +7,10 @@
       #result {
         display: none;
       }
+
+      .error {
+        border: 1px solid red;
+      }
     </style>
   </head>
   <body>
@@ -34,6 +38,23 @@
       var result_div = document.getElementById("result");
       var volume = document.getElementById("volume");
 
+      function displayErrors(errors) {
+        var inputs = document.getElementsByTagName("input");
+        for(i=0; i < inputs.length; i++) {
+          var input = inputs[i];
+          if(errors.indexOf(input.name) >= 0) {
+            input.classList.add("error");
+          }
+        }
+      }
+
+      function clearErrors() {
+        var inputs = document.getElementsByTagName("input");
+        for(i=0; i < inputs.length; i++) {
+          inputs[i].classList.remove("error");
+        }
+      }
+
       function postResult(value) {
         volume.innerHTML = value;
         result_div.style.display = 'block';
@@ -57,7 +78,7 @@
 
       function calculateMeasurements() {
         clearResult();
-
+        clearErrors();
         var form = document.getElementById("measurement-form");
 
         // get form action  programmatically (instead of just typing it in)
@@ -78,7 +99,12 @@
           if(xhr.readyState == 4 && xhr.status == 200) {
             var result = xhr.responseText;
             console.log('Result: ' + result);
-            postResult(result);
+            var json = JSON.parse(result);
+            if(json.hasOwnProperty("errors") && json.errors.length > 0) {
+              displayErrors(json.errors);
+            } else {
+                postResult(json.volume);
+            }
           }
         };
         xhr.send(form_data);
