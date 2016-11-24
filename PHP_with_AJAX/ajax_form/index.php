@@ -44,6 +44,17 @@
         result_div.style.display = 'none';
       }
 
+      // omits textareas, select-options, checkboxes, radio buttons
+      function gatherFormData(form) {
+        var inputs = form.getElementsByTagName("input");
+        var array = [];
+        for(i=0; i < inputs.length; i++) {
+          var inputNameValue = inputs[i].name + '=' + inputs[i].value;
+          array.push(inputNameValue);
+        }
+        return array.join('&');
+      }
+
       function calculateMeasurements() {
         clearResult();
 
@@ -53,7 +64,7 @@
         var action = form.getAttribute("action");
 
         // gather form data
-
+        var form_data = gatherFormData(form);
 
         var xhr = new XMLHttpRequest();
         xhr.open('POST', action, true);
