@@ -23,14 +23,30 @@
         padding: 6px 10px;
       }
 
-      button.favorite-button {
+      button.favorite-button, button.unfavorite-button {
         background: #0000FF;
         color: white;
         text-align: center;
         width: 70px;
       }
-      button.favorite-button:hover {
+      button.favorite-button:hover, button.unfavorite-button:hover {
         background: #000099;
+      }
+
+      button.favorite-button {
+        display: inline;
+      }
+
+      .favorite button.favorite-button {
+        display: none;
+      }
+
+      button.unfavorite-button {
+        display: none;
+      }
+
+      .favorite button.unfavorite-button {
+        display: inline;
       }
 
       .favorite-heart {
@@ -58,18 +74,21 @@
         <h3>Blog Post 101</h3>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed scelerisque nunc malesuada mauris fermentum commodo. Integer non pellentesque augue, vitae pellentesque tortor. Ut gravida ullamcorper dolor, ac fringilla mauris interdum id. Nulla porta egestas nisi, et eleifend nisl tincidunt suscipit. Suspendisse massa ex, fringilla quis orci a, rhoncus porta nulla. Aliquam diam velit, bibendum sit amet suscipit eget, mollis in purus. Sed mattis ultricies scelerisque. Integer ligula magna, feugiat non purus eget, pharetra volutpat orci. Duis gravida neque erat, nec venenatis dui dictum vel. Maecenas molestie tortor nec justo porttitor, in sagittis libero consequat. Maecenas finibus porttitor nisl vitae tincidunt.</p>
         <button class="favorite-button">Favorite</button>
+        <button class="unfavorite-button">Unfavorite</button>
       </div>
       <div id="blog-post-102" class="blog-post <?php if(is_favorite(102)) { echo 'favorite'; } ?>">
         <span class="favorite-heart">&hearts;</span>
         <h3>Blog Post 102</h3>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed scelerisque nunc malesuada mauris fermentum commodo. Integer non pellentesque augue, vitae pellentesque tortor. Ut gravida ullamcorper dolor, ac fringilla mauris interdum id. Nulla porta egestas nisi, et eleifend nisl tincidunt suscipit. Suspendisse massa ex, fringilla quis orci a, rhoncus porta nulla. Aliquam diam velit, bibendum sit amet suscipit eget, mollis in purus. Sed mattis ultricies scelerisque. Integer ligula magna, feugiat non purus eget, pharetra volutpat orci. Duis gravida neque erat, nec venenatis dui dictum vel. Maecenas molestie tortor nec justo porttitor, in sagittis libero consequat. Maecenas finibus porttitor nisl vitae tincidunt.</p>
         <button class="favorite-button">Favorite</button>
+        <button class="unfavorite-button">Unfavorite</button>
       </div>
       <div id="blog-post-103" class="blog-post <?php if(is_favorite(103)) { echo 'favorite'; } ?>">
         <span class="favorite-heart">&hearts;</span>
         <h3>Blog Post 103</h3>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed scelerisque nunc malesuada mauris fermentum commodo. Integer non pellentesque augue, vitae pellentesque tortor. Ut gravida ullamcorper dolor, ac fringilla mauris interdum id. Nulla porta egestas nisi, et eleifend nisl tincidunt suscipit. Suspendisse massa ex, fringilla quis orci a, rhoncus porta nulla. Aliquam diam velit, bibendum sit amet suscipit eget, mollis in purus. Sed mattis ultricies scelerisque. Integer ligula magna, feugiat non purus eget, pharetra volutpat orci. Duis gravida neque erat, nec venenatis dui dictum vel. Maecenas molestie tortor nec justo porttitor, in sagittis libero consequat. Maecenas finibus porttitor nisl vitae tincidunt.</p>
         <button class="favorite-button">Favorite</button>
+        <button class="unfavorite-button">Unfavorite</button>
       </div>
     </div>
 
@@ -104,6 +123,38 @@
       var buttons = document.getElementsByClassName("favorite-button");
       for(i=0; i < buttons.length; i++) {
         buttons.item(i).addEventListener("click", favorite);
+      }
+
+      function unfavorite() {
+        /*
+        * We need to get to the id attribute of the div tag that has the button.
+        * Because this method was called for the button whose parent is the
+        * div tag we are looking for, we can get to the parent element using
+        * this.parentElement.
+        */
+        var parent = this.parentElement;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'unfavorite.php', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        xhr.onreadystatechange = function () {
+          if(xhr.readyState == 4 && xhr.status == 200) {
+            var result = xhr.responseText;
+            console.log('Result: ' + result);
+            // If the result comes back as the string 'true' then we want to
+            // add a class to the parent div tag.
+            if(result === 'true') {
+              parent.classList.remove("favorite");
+            }
+          }
+        };
+        xhr.send("id=" + parent.id);
+      }
+
+      var buttons = document.getElementsByClassName("unfavorite-button");
+      for(i=0; i < buttons.length; i++) {
+        buttons.item(i).addEventListener("click", unfavorite);
       }
 
     </script>

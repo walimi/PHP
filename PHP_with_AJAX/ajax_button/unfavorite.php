@@ -1,6 +1,6 @@
 <?php
   // You can simulate a slow server with sleep
-  sleep(2);
+  // sleep(2);
 
   session_start();
 
@@ -9,6 +9,13 @@
   function is_ajax_request() {
     return isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
       $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest';
+  }
+
+  // A handy function to remove a single element from an array_remove
+  function array_remove($element, $array) {
+    $index = array_search($element, $array);
+    array_splice($array, $index, 1);
+    return $array;
   }
 
   if(!is_ajax_request()) { exit; }
@@ -20,8 +27,8 @@
     $id = $matches[1];
 
     // store in $_SESSION['favorites']
-    if(!in_array($id, $_SESSION['favorites'])) {
-        $_SESSION['favorites'][] = $id;
+    if(in_array($id, $_SESSION['favorites'])) {
+        $_SESSION['favorites'] = array_remove($id, $_SESSION['favorites']);
     }
 
     echo 'true';
