@@ -18,11 +18,14 @@
   if($height == '') { $errors[] = 'height'; }
 
   if(!empty($errors)) {
-    // won't work b/c of single-quotes
-    //echo "{ 'errors:'}" . json_encode($errors) . "}";
 
-    $result_array = array('errors' => $errors);
-    echo json_encode($result_array);
+    if(is_ajax_request()) {
+      $result_array = array('errors' => $errors);
+      echo json_encode($result_array);
+    } else {
+      echo "<p>There were errors on : " . implode(', ', $errors) . "</p>";
+      echo "<p><a href=\"index.php\">Back</a></p>";
+    }
     exit;
   }
 
@@ -31,7 +34,8 @@
   if(is_ajax_request()) {
     echo json_encode(array('volume' => $volume));
   } else {
-    exit;
+    echo "<p>The total volume is: " . $volume . "</p>";
+    echo "<p><a href=\"index.php\">Back</a></p>";
   }
 
 ?>
