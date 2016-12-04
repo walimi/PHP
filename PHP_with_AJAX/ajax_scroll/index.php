@@ -77,6 +77,15 @@
         load_more.setAttribute("data-page", page);
       }
 
+      function scrollReaction() {
+        var content_height = container.offsetHeight;
+        var current_y = window.innerHeight + window.pageYOffset;
+        console.log(current_y + "/" + content_height);
+        if(current_y >= content_height) {
+          loadMore();
+        }
+      }
+
       function loadMore() {
 
         showSpinner();
@@ -106,6 +115,10 @@
       }
 
       load_more.addEventListener("click", loadMore);
+
+      window.onscroll = function() {
+        scrollReaction();
+      }
 
       // Load even the first page with Ajax
       loadMore();
